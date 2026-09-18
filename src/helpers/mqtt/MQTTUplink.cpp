@@ -17,7 +17,7 @@
 #include <time.h>
 
 #ifndef FIRMWARE_VERSION
-  #define FIRMWARE_VERSION "v1.16.0-vbart-meshcoretel"
+  #define FIRMWARE_VERSION "v1.16.0-vbart-meshcoretel-siberia55.1"
 #endif
 
 #ifndef FIRMWARE_BUILD_DATE

@@ -7,6 +7,15 @@
 #if defined(ESP_PLATFORM)
   #include <WiFi.h>
   #include <esp_sntp.h>
+  static void onWifiDisconnected(arduino_event_id_t event, arduino_event_info_t info) {
+    if (event == ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
+      Serial.printf(
+        "[WiFi] disconnected reason=%d rssi=%d\n",
+        info.wifi_sta_disconnected.reason,
+        info.wifi_sta_disconnected.rssi
+      );
+    }
+  }
 #endif
 
 namespace {
@@ -54,6 +63,13 @@ void NetworkService::begin(FILESYSTEM* fs,
                            const char* legacy_wifi_pwd) {
   _fs = fs;
   NetworkPrefsStore::load(_fs, _prefs, legacy_wifi_powersave, legacy_wifi_ssid, legacy_wifi_pwd);
+
+  #if defined(ESP_PLATFORM)
+  WiFi.onEvent(
+    onWifiDisconnected,
+    ARDUINO_EVENT_WIFI_STA_DISCONNECTED
+  );
+#endif
 }
 
 void NetworkService::end() {
